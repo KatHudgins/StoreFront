@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="StoreFrontModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Classification">
+          <Key>
+            <PropertyRef Name="ClassificationID" />
+          </Key>
+          <Property Name="ClassificationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Style" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Creatures">
+          <Key>
+            <PropertyRef Name="CreatureID" />
+          </Key>
+          <Property Name="CreatureID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreatureName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ClassificationID" Type="int" Nullable="false" />
+          <Property Name="Price" Type="money" />
+          <Property Name="Description" Type="nvarchar" MaxLength="250" />
+          <Property Name="CSID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CreatureStatuses">
+          <Key>
+            <PropertyRef Name="CSID" />
+          </Key>
+          <Property Name="CSID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CStatus" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DeptID" />
+          </Key>
+          <Property Name="DeptID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeptName" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="EmID" />
+          </Key>
+          <Property Name="EmID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="DeptID" Type="int" Nullable="false" />
+          <Property Name="ReportTo" Type="int" />
+        </EntityType>
+        <Association Name="FK_Creatures_Classification1">
+          <End Role="Classification" Type="Self.Classification" Multiplicity="1" />
+          <End Role="Creatures" Type="Self.Creatures" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classification">
+              <PropertyRef Name="ClassificationID" />
+            </Principal>
+            <Dependent Role="Creatures">
+              <PropertyRef Name="ClassificationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Creatures_CreatureStatuses">
+          <End Role="CreatureStatuses" Type="Self.CreatureStatuses" Multiplicity="1" />
+          <End Role="Creatures" Type="Self.Creatures" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CreatureStatuses">
+              <PropertyRef Name="CSID" />
+            </Principal>
+            <Dependent Role="Creatures">
+              <PropertyRef Name="CSID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employees_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="DeptID" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="DeptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employees_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Employees1" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmID" />
+            </Principal>
+            <Dependent Role="Employees1">
+              <PropertyRef Name="ReportTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StoreFrontModelStoreContainer">
+          <EntitySet Name="Classification" EntityType="Self.Classification" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Creatures" EntityType="Self.Creatures" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CreatureStatuses" EntityType="Self.CreatureStatuses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Creatures_Classification1" Association="Self.FK_Creatures_Classification1">
+            <End Role="Classification" EntitySet="Classification" />
+            <End Role="Creatures" EntitySet="Creatures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Creatures_CreatureStatuses" Association="Self.FK_Creatures_CreatureStatuses">
+            <End Role="CreatureStatuses" EntitySet="CreatureStatuses" />
+            <End Role="Creatures" EntitySet="Creatures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employees_Department" Association="Self.FK_Employees_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employees_Employees" Association="Self.FK_Employees_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Employees1" EntitySet="Employees" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="StoreFrontModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Classification">
+          <Key>
+            <PropertyRef Name="ClassificationID" />
+          </Key>
+          <Property Name="ClassificationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Style" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Creatures" Relationship="Self.FK_Creatures_Classification1" FromRole="Classification" ToRole="Creatures" />
+        </EntityType>
+        <EntityType Name="Creature">
+          <Key>
+            <PropertyRef Name="CreatureID" />
+          </Key>
+          <Property Name="CreatureID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreatureName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ClassificationID" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CSID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Classification" Relationship="Self.FK_Creatures_Classification1" FromRole="Creatures" ToRole="Classification" />
+          <NavigationProperty Name="CreatureStatus" Relationship="Self.FK_Creatures_CreatureStatuses" FromRole="Creatures" ToRole="CreatureStatuses" />
+        </EntityType>
+        <EntityType Name="CreatureStatus">
+          <Key>
+            <PropertyRef Name="CSID" />
+          </Key>
+          <Property Name="CSID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Creatures" Relationship="Self.FK_Creatures_CreatureStatuses" FromRole="CreatureStatuses" ToRole="Creatures" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DeptID" />
+          </Key>
+          <Property Name="DeptID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeptName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Employees_Department" FromRole="Department" ToRole="Employees" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmID" />
+          </Key>
+          <Property Name="EmID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DeptID" Type="Int32" Nullable="false" />
+          <Property Name="ReportTo" Type="Int32" />
+          <NavigationProperty Name="Department" Relationship="Self.FK_Employees_Department" FromRole="Employees" ToRole="Department" />
+          <NavigationProperty Name="Employees1" Relationship="Self.FK_Employees_Employees" FromRole="Employees" ToRole="Employees1" />
+          <NavigationProperty Name="Employee1" Relationship="Self.FK_Employees_Employees" FromRole="Employees1" ToRole="Employees" />
+        </EntityType>
+        <Association Name="FK_Creatures_Classification1">
+          <End Role="Classification" Type="Self.Classification" Multiplicity="1" />
+          <End Role="Creatures" Type="Self.Creature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classification">
+              <PropertyRef Name="ClassificationID" />
+            </Principal>
+            <Dependent Role="Creatures">
+              <PropertyRef Name="ClassificationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Creatures_CreatureStatuses">
+          <End Role="CreatureStatuses" Type="Self.CreatureStatus" Multiplicity="1" />
+          <End Role="Creatures" Type="Self.Creature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CreatureStatuses">
+              <PropertyRef Name="CSID" />
+            </Principal>
+            <Dependent Role="Creatures">
+              <PropertyRef Name="CSID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employees_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="DeptID" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="DeptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employees_Employees">
+          <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Employees1" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmID" />
+            </Principal>
+            <Dependent Role="Employees1">
+              <PropertyRef Name="ReportTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StoreFrontEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Classifications" EntityType="Self.Classification" />
+          <EntitySet Name="Creatures" EntityType="Self.Creature" />
+          <EntitySet Name="CreatureStatuses" EntityType="Self.CreatureStatus" />
+          <EntitySet Name="Departments" EntityType="Self.Department" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <AssociationSet Name="FK_Creatures_Classification1" Association="Self.FK_Creatures_Classification1">
+            <End Role="Classification" EntitySet="Classifications" />
+            <End Role="Creatures" EntitySet="Creatures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Creatures_CreatureStatuses" Association="Self.FK_Creatures_CreatureStatuses">
+            <End Role="CreatureStatuses" EntitySet="CreatureStatuses" />
+            <End Role="Creatures" EntitySet="Creatures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employees_Department" Association="Self.FK_Employees_Department">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employees_Employees" Association="Self.FK_Employees_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Employees1" EntitySet="Employees" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="StoreFrontModelStoreContainer" CdmEntityContainer="StoreFrontEntities">
+          <EntitySetMapping Name="Classifications">
+            <EntityTypeMapping TypeName="StoreFrontModel.Classification">
+              <MappingFragment StoreEntitySet="Classification">
+                <ScalarProperty Name="ClassificationID" ColumnName="ClassificationID" />
+                <ScalarProperty Name="Style" ColumnName="Style" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Creatures">
+            <EntityTypeMapping TypeName="StoreFrontModel.Creature">
+              <MappingFragment StoreEntitySet="Creatures">
+                <ScalarProperty Name="CreatureID" ColumnName="CreatureID" />
+                <ScalarProperty Name="CreatureName" ColumnName="CreatureName" />
+                <ScalarProperty Name="ClassificationID" ColumnName="ClassificationID" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CSID" ColumnName="CSID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CreatureStatuses">
+            <EntityTypeMapping TypeName="StoreFrontModel.CreatureStatus">
+              <MappingFragment StoreEntitySet="CreatureStatuses">
+                <ScalarProperty Name="CSID" ColumnName="CSID" />
+                <ScalarProperty Name="CStatus" ColumnName="CStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="StoreFrontModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+                <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="StoreFrontModel.Employee">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="EmID" ColumnName="EmID" />
+                <ScalarProperty Name="EmName" ColumnName="EmName" />
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+                <ScalarProperty Name="ReportTo" ColumnName="ReportTo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
